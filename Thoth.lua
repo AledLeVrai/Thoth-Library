@@ -63,7 +63,7 @@ function Thoth:compare(str1, str2)
     return math.floor(percentage.. "%")
 end
 
--- Utility function able to print a string/table/jsondata
+-- Print a string/table/jsondata in a pretty way
 function Thoth:print(data)
     local function printTable(t, indent)
         indent = indent or ""
@@ -88,6 +88,34 @@ function Thoth:print(data)
         printTable(data)
     else
         print(tostring(data))
+    end
+end
+
+-- Warn a string/table/jsondata in a pretty way
+function Thoth:warn(data)
+    local function printTable(t, indent)
+        indent = indent or ""
+        for key, value in pairs(t) do
+            if type(value) == "table" then
+                warn(indent .. tostring(key) .. ":")
+                printTable(value, indent .. "  ")
+            else
+                warn(indent .. tostring(key) .. ": " .. tostring(value))
+            end
+        end
+    end
+
+    if type(data) == "string" then
+        if pcall(function() return self.Http:JSONDecode(data) end) then
+            local decoded = self.Http:JSONDecode(data)
+            printTable(decoded)
+        else
+            warn(data)
+        end
+    elseif type(data) == "table" then
+        printTable(data)
+    else
+        warn(tostring(data))
     end
 end
 
