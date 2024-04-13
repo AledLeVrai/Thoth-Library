@@ -47,6 +47,21 @@ function Thoth.mouse()
     return player and player:GetMouse()
 end
 
+function Thoth.bones(character)
+    character = character or Thoth.localPlayer().Character
+    if not character then
+        warn("Character is not available.")
+        return {}
+    end
+    local bones = {}
+    for _, bone in ipairs(character:GetDescendants()) do
+        if bone:IsA("Bone") then
+            table.insert(bones, bone)
+        end
+    end
+    return bones
+end
+
 -- Round a number to the specified number of decimal places
 function Thoth:round(number, decimalPlaces)
     local multiplier = 10 ^ (decimalPlaces or 0)
@@ -66,6 +81,34 @@ function Thoth:compare(str1, str2)
     end
     local percentage = (count / math.min(#str1, #str2)) * 100
     return math.floor(percentage)
+end
+
+-- Utility function able to print a string/table/jsondata
+function Thoth:print(data)
+    local function printTable(t, indent)
+        indent = indent or ""
+        for key, value in pairs(t) do
+            if type(value) == "table" then
+                print(indent .. tostring(key) .. ":")
+                printTable(value, indent .. "  ")
+            else
+                print(indent .. tostring(key) .. ": " .. tostring(value))
+            end
+        end
+    end
+
+    if type(data) == "string" then
+        if pcall(function() return self.Http:JSONDecode(data) end) then
+            local decoded = self.Http:JSONDecode(data)
+            printTable(decoded)
+        else
+            print(data)
+        end
+    elseif type(data) == "table" then
+        printTable(data)
+    else
+        print(tostring(data))
+    end
 end
 
 --//Roblox Functions
