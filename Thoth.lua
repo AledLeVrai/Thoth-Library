@@ -68,7 +68,7 @@ function Thoth:round(number, decimalPlaces)
     return math.floor(number * multiplier + 0.5) / multiplier
 end
 
--- Compare two strings and return the percentage of matching characters
+-- Compare two strings and return the number of matching characters
 function Thoth:compare(str1, str2)
     local count = 0
     local visited = {}
@@ -79,8 +79,7 @@ function Thoth:compare(str1, str2)
             visited[char] = true
         end
     end
-    local percentage = (count / math.min(#str1, #str2)) * 100
-    return math.floor(percentage) .. "%"
+    return count
 end
 
 -- Utility function able to print a string/table/jsondata
