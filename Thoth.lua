@@ -1,16 +1,35 @@
 local Thoth = {}
 
--- Dynamically retrieve and cache all available Roblox services
-function Thoth.fetchServices()
-    for _, service in ipairs(game:GetChildren()) do
-        if pcall(function() game:GetService(service.ClassName) end) then
-            Thoth[service.ClassName] = service
+-- Retrieve and cache services from Roblox
+function Thoth.services(services)
+    for name, serviceName in pairs(services) do
+        local service = game:GetService(serviceName)
+        if service then
+            Thoth[name] = service
+        else
+            warn("Service not found:", serviceName)
         end
     end
 end
 
--- Initialize and cache all services when the module is loaded
-Thoth.fetchServices()
+local services = {
+    Workspace = "Workspace",
+    ReplicatedStorage = "ReplicatedStorage",
+    Http = "HttpService",
+    Tween = "TweenService",
+    CoreGui = "CoreGui",
+    Pathfinding = "PathfindingService",
+    RunService = "RunService",
+    Teleport = "TeleportService",
+    Network = "NetworkClient",
+    UserInput = "UserInputService",
+    Players = "Players",
+    GuiService = "GuiService",
+    Lighting = "Lighting",
+    CollectionService = "CollectionService"
+}
+
+Thoth.services(services)
 
 -- Retrieve the LocalPlayer
 function Thoth.localPlayer()
@@ -49,7 +68,7 @@ function Thoth:round(number, decimalPlaces)
     return math.floor(number * multiplier + 0.5) / multiplier
 end
 
--- Compare two strings and return the number of matching characters
+-- Compare two strings and return the percentage of matching characters
 function Thoth:compare(str1, str2)
     local count = 0
     local visited = {}
@@ -60,7 +79,8 @@ function Thoth:compare(str1, str2)
             visited[char] = true
         end
     end
-    return count
+    local percentage = (count / math.min(#str1, #str2)) * 100
+    return math.floor(percentage.. "%")
 end
 
 -- Utility function able to print a string/table/jsondata
@@ -91,6 +111,24 @@ function Thoth:print(data)
     end
 end
 
+-- Function to print debug messages with a "[BMO]" prefix
+function Thoth:debug(data)
+    local function formatMessage(msg)
+        if type(msg) == "table" then
+            local str = "{"
+            for k, v in pairs(msg) do
+                str = str .. tostring(k) .. "=" .. tostring(v) .. ", "
+            end
+            str = str .. "}"
+            return str
+        else
+            return tostring(msg)
+        end
+    end
+
+    print("[BMO] -" .. formatMessage(data))
+end
+
 --//Roblox Functions
 
 -- Return the Character model of the specified player (defaults to LocalPlayer)
@@ -113,7 +151,7 @@ end
 
 -- Rejoins the game to a random server
 function Thoth:serverhop()
-    local TeleportService = self.Teleport
+    local TeleportService = self.TeleportService
     local placeId = game.PlaceId
     local player = self.localPlayer()
 
