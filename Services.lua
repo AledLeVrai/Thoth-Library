@@ -1,10 +1,10 @@
-local Service = {}
+local Thoth = {}
 
-function Service.getServices(services)
+function Thoth.getServices(services)
     for name, serviceName in pairs(services) do
         local service = game:GetService(serviceName)
         if service then
-            Service[name] = service
+            Thoth[name] = service
         else
             warn("Service not found:", serviceName)
         end
@@ -28,6 +28,19 @@ local services = {
     CollectionService = "CollectionService"
 }
 
-Service.getServices(services)
+Thoth.getServices(services)
 
-return Service
+function Thoth.LocalPlayer()
+    return Thoth.Players.LocalPlayer
+end
+
+function Thoth.Camera()
+    return Thoth.Workspace.CurrentCamera
+end
+
+function Thoth.Mouse()
+    local player = Thoth.getLocalPlayer()
+    return player and player:GetMouse()
+end
+
+return Thoth
