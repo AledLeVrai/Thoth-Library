@@ -1,35 +1,15 @@
 local Thoth = {}
 
--- Retrieve and cache services from Roblox
-function Thoth.services(services)
-    for name, serviceName in pairs(services) do
-        local service = game:GetService(serviceName)
-        if service then
-            Thoth[name] = service
-        else
-            warn("Service not found:", serviceName)
+-- Retrieve and cache all available Roblox services
+function Thoth.fetchServices()
+    for _, service in ipairs(game:GetChildren()) do
+        if pcall(function() game:GetService(service.ClassName) end) then
+            Thoth[service.ClassName] = service
         end
     end
 end
 
-local services = {
-    Workspace = "Workspace",
-    ReplicatedStorage = "ReplicatedStorage",
-    Http = "HttpService",
-    Tween = "TweenService",
-    CoreGui = "CoreGui",
-    Pathfinding = "PathfindingService",
-    RunService = "RunService",
-    Teleport = "TeleportService",
-    Network = "NetworkClient",
-    UserInput = "UserInputService",
-    Players = "Players",
-    GuiService = "GuiService",
-    Lighting = "Lighting",
-    CollectionService = "CollectionService"
-}
-
-Thoth.services(services)
+Thoth.fetchServices()
 
 -- Retrieve the LocalPlayer
 function Thoth.localPlayer()
@@ -113,20 +93,25 @@ end
 
 -- Function to print debug messages with a "[BMO]" prefix
 function Thoth:debug(data)
-    local function formatMessage(msg)
-        if type(msg) == "table" then
-            local str = "{"
-            for k, v in pairs(msg) do
-                str = str .. tostring(k) .. "=" .. tostring(v) .. ", "
+    local function formatTable(tbl, level)
+        level = level or 0
+        local indent = string.rep(" ", level * 4) -- Adjust for indentation
+        for k, v in pairs(tbl) do
+            if type(v) == "table" then
+                print(indent .. tostring(k) .. ":")
+                formatTable(v, level + 1)
+            else
+                print(indent .. tostring(k) .. ": " .. tostring(v))
             end
-            str = str .. "}"
-            return str
-        else
-            return tostring(msg)
         end
     end
 
-    print("[BMO] -" .. formatMessage(data))
+    if type(data) == "table" then
+        print("[BMO] Table content:")
+        formatTable(data)
+    else
+        print("[BMO] " .. tostring(data))
+    end
 end
 
 --//Roblox Functions
