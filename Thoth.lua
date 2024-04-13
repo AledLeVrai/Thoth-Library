@@ -80,7 +80,7 @@ function Thoth:compare(str1, str2)
         end
     end
     local percentage = (count / math.min(#str1, #str2)) * 100
-    return math.floor(percentage.. "%")
+    return "%" .. math.floor(percentage)  -- Append the "%" sign in front of the percentage
 end
 
 -- Utility function able to print a string/table/jsondata
