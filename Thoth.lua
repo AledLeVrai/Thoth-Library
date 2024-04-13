@@ -132,7 +132,7 @@ end
 
 -- Rejoins the game to a random server
 function Thoth:serverhop()
-    local TeleportService = self.TeleportService
+    local TeleportService = self.Teleport
     local placeId = game.PlaceId
     local player = self.localPlayer()
 
