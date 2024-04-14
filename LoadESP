@@ -272,18 +272,12 @@ function boxBase:Update()
                     local DFValue = playerStats:FindFirstChild("DF") and playerStats.DF.Value
                     local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
             
-                    if Vis5 and DFValue then
+                    if Vis5 then
                         self.Components.Fruit.Visible = true
                         self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
                         self.Components.Fruit.Text = "[" .. DFValue .. "]"
                         self.Components.Fruit.Color = ESP.FruitColor
                     else
-                        if Vis5 and DFValue == "" then
-                            self.Components.Fruit.Visible = true
-                            self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
-                            self.Components.Fruit.Text = "[" .. "None" .. "]"
-                            self.Components.Fruit.Color = ESP.FruitColor   
-                        end
                         self.Components.Fruit.Visible = false
                     end
                 else
