@@ -277,7 +277,7 @@ function boxBase:Update()
                         self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
                         self.Components.Fruit.Text = "[" .. DFValue .. "]"
                         self.Components.Fruit.Color = ESP.FruitColor
-                        if not DFValue then
+                        if DFValue == "" then
                             self.Components.Fruit.Text = "[" .. "None" .. "]"
                         end
                     else
@@ -297,11 +297,9 @@ function boxBase:Update()
                     if Vis5 then
                         self.Components.Tool.Visible = true
                         self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y - 28)
-                        --[[
                         if not ESP.Fruit then
                             self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
                         end
-                        ]]
                         if self.Player.Character:FindFirstChildOfClass("Tool") then
                             self.Components.Tool.Text = "[" .. self.Player.Character:FindFirstChildOfClass("Tool").Name .. "]"
                             self.Components.Tool.Color = Color3.fromRGB(190, 125, 255)
