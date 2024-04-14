@@ -344,6 +344,7 @@ function boxBase:Update()
             self.Components.Distance.Visible = false
             self.Components.Health.Visible = false
             self.Components.Tool.Visible = false
+            self.Components.Fruit.Visible = false
             self.Components.Name.Visible = false
             self.Components.Tracer.Visible = false
         end
@@ -408,6 +409,13 @@ function ESP:Add(obj, options)
 		Outline = true,
 		Size = 15,
 		Visible = self.Enabled and self.Tool
+	})
+    box.Components["Fruit"] = Draw("Text", {
+		Color = box.Color,
+		Center = true,
+		Outline = true,
+		Size = 15,
+		Visible = self.Enabled and self.Fruit
 	})
 	box.Components["Tracer"] = Draw("Line", {
 		Thickness = ESP.Thickness,
