@@ -4,9 +4,9 @@ local ESP = {
 	Boxes = false,
 	BoxShift = CFrame.new(0,-1.5,0),
 	BoxSize = Vector3.new(4,6,0),
-	Color = Color3.fromRGB(199, 255, 255),
-    ToolColor = Color3.fromRGB(199, 255, 255),
-    FruitColor = Color3.fromRGB(199, 255, 255),
+	Color = Color3.fromRGB(255, 255, 255),
+    ToolColor = Color3.fromRGB(255, 200, 125),
+    FruitColor = Color3.fromRGB(255, 90, 90),
 	FaceCamera = false,
 	Names = false,
 	Distance = false,
@@ -253,7 +253,7 @@ function boxBase:Update()
                         local roundedHealth = math.floor(self.Player.Character.Humanoid.Health + 0.5)
                         local roundedMaxHealth = math.floor(self.Player.Character.Humanoid.MaxHealth + 0.5)
                         self.Components.Health.Text = "[" .. roundedHealth .. "/" .. roundedMaxHealth .. "]"
-                        self.Components.Health.Color = color
+                        self.Components.Health.Color = Color3.fromRGB(165, 255, 140)
                     else
                         self.Components.Health.Visible = false
                     end
