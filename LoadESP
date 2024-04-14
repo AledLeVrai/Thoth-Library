@@ -233,7 +233,7 @@ function boxBase:Update()
 
                 if Vis5 then
                     self.Components.Distance.Visible = true
-                    self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 28)
+                    self.Components.Distance.Position = Vector2.new(TagPos.X, TagPos.Y + 56)
                     self.Components.Distance.Text = math.floor((cam.CFrame.p - cf.p).magnitude) .."m"
                     self.Components.Distance.Color = color
                 else
@@ -274,7 +274,7 @@ function boxBase:Update()
             
                     if Vis5 then
                         self.Components.Fruit.Visible = true
-                        self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y + 56)
+                        self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y + 28)
                         self.Components.Fruit.Text = "[" .. DFValue .. "]"
                         self.Components.Fruit.Color = ESP.FruitColor
                     else
@@ -293,7 +293,7 @@ function boxBase:Update()
             
                     if Vis5 then
                         self.Components.Tool.Visible = true
-                        self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
+                        self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y + 36)
                         if self.Player.Character:FindFirstChildOfClass("Tool") then
                             self.Components.Tool.Text = "[" .. self.Player.Character:FindFirstChildOfClass("Tool").Name .. "]"
                             self.Components.Tool.Color = ESP.ToolColor
