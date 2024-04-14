@@ -272,15 +272,18 @@ function boxBase:Update()
                     local DFValue = playerStats:FindFirstChild("DF") and playerStats.DF.Value
                     local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
             
-                    if Vis5 then
+                    if Vis5 and DFValue then
                         self.Components.Fruit.Visible = true
                         self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
                         self.Components.Fruit.Text = "[" .. DFValue .. "]"
                         self.Components.Fruit.Color = ESP.FruitColor
-                        if DFValue == "" then
-                            self.Components.Fruit.Text = "[" .. "None" .. "]"
-                        end
                     else
+                        if Vis5 and DFValue == "" then
+                            self.Components.Fruit.Visible = true
+                            self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
+                            self.Components.Fruit.Text = "[" .. "None" .. "]"
+                            self.Components.Fruit.Color = ESP.FruitColor   
+                        end
                         self.Components.Fruit.Visible = false
                     end
                 else
@@ -297,9 +300,11 @@ function boxBase:Update()
                     if Vis5 then
                         self.Components.Tool.Visible = true
                         self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y - 28)
+                        --[[
                         if not ESP.Fruit then
                             self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
                         end
+                        ]]
                         if self.Player.Character:FindFirstChildOfClass("Tool") then
                             self.Components.Tool.Text = "[" .. self.Player.Character:FindFirstChildOfClass("Tool").Name .. "]"
                             self.Components.Tool.Color = Color3.fromRGB(190, 125, 255)
