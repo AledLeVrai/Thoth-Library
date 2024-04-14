@@ -261,18 +261,18 @@ function boxBase:Update()
             end
 
             if self.Player then
-                if ESP.Tool then
+                local statsPath = "Stats" .. tostring(self.Player.Name)
+                local playerStats = game:GetService("ReplicatedStorage"):FindFirstChild(statsPath) and game:GetService("ReplicatedStorage")[statsPath].Stats
+            
+                if ESP.Tool and playerStats then
+                    local DFValue = playerStats:FindFirstChild("DF") and playerStats.DF.Value or "None"
                     local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
-
+            
                     if Vis5 then
                         self.Components.Tool.Visible = true
                         self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
-                        if self.Player.Character:FindFirstChildOfClass("Tool") then
-                            self.Components.Tool.Text = self.Player.Character:FindFirstChildOfClass("Tool").Name
-                            self.Components.Tool.Color = ESP.ToolColor
-                        else
-                            self.Components.Tool.Visible = false
-                        end
+                        self.Components.Tool.Text = DFValue
+                        self.Components.Tool.Color = ESP.ToolColor
                     else
                         self.Components.Tool.Visible = false
                     end
