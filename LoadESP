@@ -6,12 +6,14 @@ local ESP = {
 	BoxSize = Vector3.new(4,6,0),
 	Color = Color3.fromRGB(199, 255, 255),
     ToolColor = Color3.fromRGB(199, 255, 255),
+    FruitColor = Color3.fromRGB(199, 255, 255),
 	FaceCamera = false,
 	Names = false,
 	Distance = false,
 	Health = false,
     Tool = false,
-	TeamColor = true,
+    Fruit = false,
+	TeamColor = false,
 	Thickness = 1.5,
 	AttachShift = 1,
 	TeamMates = true,
@@ -244,35 +246,60 @@ function boxBase:Update()
             if self.Player then
                 if ESP.Health then
                     local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
-
-                        if Vis5 then
-                            self.Components.Health.Visible = true
-                            self.Components.Health.Position = Vector2.new(TagPos.X, TagPos.Y + 14)               
-                            self.Components.Health.Text = math.floor(self.Player.Character.Humanoid.Health + 0.5)  .. ":" .. self.Player.Character.Humanoid.MaxHealth
-                            self.Components.Health.Color = color
-                        else
-                            self.Components.Health.Visible = false
-                        end
+            
+                    if Vis5 then
+                        self.Components.Health.Visible = true
+                        self.Components.Health.Position = Vector2.new(TagPos.X, TagPos.Y + 14)
+                        local roundedHealth = math.floor(self.Player.Character.Humanoid.Health + 0.5)
+                        local roundedMaxHealth = math.floor(self.Player.Character.Humanoid.MaxHealth + 0.5)
+                        self.Components.Health.Text = "[" .. roundedHealth .. ":" .. roundedMaxHealth .. "]"
+                        self.Components.Health.Color = color
+                    else
+                        self.Components.Health.Visible = false
+                    end
                 else
                     self.Components.Health.Visible = false
                 end
             else
                 self.Components.Health.Visible = false
-            end
+            end            
 
             if self.Player then
                 local statsPath = "Stats" .. tostring(self.Player.Name)
                 local playerStats = game:GetService("ReplicatedStorage"):FindFirstChild(statsPath) and game:GetService("ReplicatedStorage")[statsPath].Stats
             
-                if ESP.Tool and playerStats then
+                if ESP.Fruit and playerStats then
                     local DFValue = playerStats:FindFirstChild("DF") and playerStats.DF.Value or "None"
+                    local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
+            
+                    if Vis5 then
+                        self.Components.Fruit.Visible = true
+                        self.Components.Fruit.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
+                        self.Components.Fruit.Text = "[" .. DFValue .. "]"
+                        self.Components.Fruit.Color = ESP.FruitColor
+                    else
+                        self.Components.Fruit.Visible = false
+                    end
+                else
+                    self.Components.Fruit.Visible = false
+                end
+            else
+                self.Components.Fruit.Visible = false
+            end
+
+            if self.Player then
+                if ESP.Tool then
                     local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
             
                     if Vis5 then
                         self.Components.Tool.Visible = true
                         self.Components.Tool.Position = Vector2.new(TagPos.X, TagPos.Y - 14)
-                        self.Components.Tool.Text = DFValue
-                        self.Components.Tool.Color = ESP.ToolColor
+                        if self.Player.Character:FindFirstChildOfClass("Tool") then
+                            self.Components.Tool.Text = "[" .. self.Player.Character:FindFirstChildOfClass("Tool").Name .. "]"
+                            self.Components.Tool.Color = ESP.ToolColor
+                        else
+                            self.Components.Tool.Visible = false
+                        end
                     else
                         self.Components.Tool.Visible = false
                     end
