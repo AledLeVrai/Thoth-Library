@@ -27,6 +27,12 @@ function Thoth.mouse()
     return player and player:GetMouse()
 end
 
+-- Retrieve the LocalPlayer's Name
+function Thoth.playerName(player)
+    player = player or self.localPlayer()
+    return player and player.Name
+end
+
 function Thoth.bones(character)
     character = character or Thoth.localPlayer().Character
     if not character then
@@ -139,6 +145,14 @@ function Thoth:debug(data)
         formatTable(data)
     else
         print("[BMO] " .. tostring(data))
+    end
+end
+
+function Thoth:PropertyToTable(objpath, objproperty, objclass, objtable)
+    for _, obj in ipairs(objpath:GetChildren()) do
+        if obj:IsA(objclass) then
+            table.insert(objtable, obj[objproperty])
+        end
     end
 end
 
